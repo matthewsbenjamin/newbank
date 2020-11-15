@@ -22,16 +22,25 @@ public class NewBankClientHandler extends Thread{
 	public void run() {
 		// keep getting requests from the client and processing them
 		try {
-			// ask for user name
-			out.println("Enter Username");
-			String userName = in.readLine();
-			// ask for password
-			out.println("Enter Password");
-			String password = in.readLine();
-			out.println("Checking Details...");
-			// authenticate user and get customer ID token from bank for use in subsequent requests
-			CustomerID customer = bank.checkLogInDetails(userName, password);
-			// if the user is authenticated then get requests from the user and process them 
+			CustomerID customer=null; //placeholder
+			int attempts = 0; // count attempts
+			while (attempts < 3) { //loop for 3
+				// ask for user name
+				out.println("Enter Username");
+				String userName = in.readLine();
+				// ask for password
+				out.println("Enter Password");
+				String password = in.readLine();
+				out.println("Checking Details...");
+				// authenticate user and get customer ID token from bank for use in subsequent requests
+				customer = bank.checkLogInDetails(userName, password);
+				// if the user is authenticated then get requests from the user and process them
+
+				// Check if we got a success
+				if(customer != null) {break;}
+				out.println("Failed login, try again");
+				attempts++;
+			}
 			if(customer != null) {
 				out.println("Log In Successful. What do you want to do?");
 				while(true) {
@@ -43,6 +52,7 @@ public class NewBankClientHandler extends Thread{
 			}
 			else {
 				out.println("Log In Failed");
+				out.println("FAIL1"); //FAIL1 means login failure
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
