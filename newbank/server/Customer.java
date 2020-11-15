@@ -17,7 +17,7 @@ public class Customer {
 	public String accountsToString() {
 		String s = "";
 		for(Account a : accounts) {
-			s += a.toString();
+			s += a.toString() + "\n"; //new line for multiple account
 		}
 		return s;
 	}

@@ -23,6 +23,7 @@ public class NewBank {
 		
 		Customer john = new Customer("pass3");
 		john.addAccount(new Account("Checking", 250.0));
+		john.addAccount(new Account("Savings", 9999.0)); //Check if we can see more than one account
 		customers.put("John", john);
 	}
 	
