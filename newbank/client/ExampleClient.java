@@ -25,6 +25,7 @@ public class ExampleClient extends Thread{
 				try {
 					while(true) {
 						String responce = bankServerIn.readLine();
+						if (responce.equals("FAIL1")) {	return; }
 						System.out.println(responce);
 					}
 				} catch (IOException e) {
