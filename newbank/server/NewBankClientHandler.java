@@ -38,7 +38,7 @@ public class NewBankClientHandler extends Thread{
 
 				// Check if we got a success
 				if(customer != null) {break;}
-				out.println("Failed login, try again");
+				out.println("Failed login attempt " + attempts + " of 3");
 				attempts++;
 			}
 			if(customer != null) {
@@ -46,8 +46,8 @@ public class NewBankClientHandler extends Thread{
 				while(true) {
 					String request = in.readLine();
 					System.out.println("Request from " + customer.getKey());
-					String responce = bank.processRequest(customer, request);
-					out.println(responce);
+					String response = bank.processRequest(customer, request);
+					out.println(response);
 				}
 			}
 			else {
