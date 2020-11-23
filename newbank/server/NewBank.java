@@ -41,18 +41,16 @@ public class NewBank {
 
 	// commands from the NewBank customer are processed in this method
 	public synchronized String processRequest(CustomerID customer, String request) {
-		String choice = null;
-		String command = null;
 		if(customers.containsKey(customer.getKey())) {
-			String[] temp = request.split(" ");
-			int pars = temp.length;
-			if (pars>0) {  choice = temp[0]; }
-			if (pars>1) {  command = temp[1]; }
-			else {  command = null;}
+			// Split the input by space into 'COMMAND' ...
+			String[] commands = request.split(" ");
 
-			switch(choice) {
+			// Commands 0 should equal the command input to the system
+			// 1... may be any arguments applicable to that command
+			switch(commands[0]) {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
-			case "NEWACCOUNT" : return addAccount(customer, command);
+			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
+			case "MOVE" : transfer(customer, commands);
 			default : return "FAIL";
 			}
 		}
@@ -71,5 +69,13 @@ public class NewBank {
 		return "DONE";
 	}
 
+	private void transfer(CustomerID customerId, String[] commands) {
+		Double amountToMove = Double.parseDouble(commands[1]);
+		String sourceAccountName = commands[2];
+		String destinationAccountName = commands[3];
+
+		Customer customer = customers.get(customerId.getKey());
+		customer.transfer(amountToMove, sourceAccountName, destinationAccountName);
+	}
 
 }

@@ -33,4 +33,16 @@ public class Customer {
 		else {return false;}
 	}
 
+	public void transfer(Double amount, String sourceId, String destId) {
+		for (Account account : accounts) {
+			if (account.name().equals(sourceId)) {
+				account.addFunds(-amount);
+			}
+			if (account.name().equals(destId)) {
+				account.addFunds(amount);
+			}
+		}
+
+	}
+
 }
