@@ -19,7 +19,10 @@ public class Account {
 	}
 
 	public void addFunds(Double amount) {
-		this.balance += amount;
+		Double newBalance = this.balance + amount;
+		if (newBalance >= 0) {
+			this.balance = newBalance;
+		};
 		return;
 	}
 
