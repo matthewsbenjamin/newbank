@@ -29,7 +29,7 @@ public class Customer {
 	/* Add CheckPassword Function */
 	public boolean checkPassword(String password) {
 		String md5Pass = getMd5(password);
-		if (password.equals(md5Pass)) { return true; }
+		if (this.password.equals(md5Pass)) { return true; }
 		else {return false;}
 	}
 
