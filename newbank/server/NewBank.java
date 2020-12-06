@@ -6,6 +6,7 @@ public class NewBank {
 	
 	private static final NewBank bank = new NewBank();
 	private HashMap<String,Customer> customers;
+	private HashMap<String, Loan> creditAgreements;
 	
 	private NewBank() {
 		customers = new HashMap<>();
@@ -51,6 +52,7 @@ public class NewBank {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
 			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
 			case "MOVE" : transfer(customer, commands);
+			case "LOAN" : loan(customer, commands);
 			default : return "FAIL";
 			}
 		}
@@ -78,4 +80,16 @@ public class NewBank {
 		customer.transfer(amountToMove, sourceAccountName, destinationAccountName);
 	}
 
+	private void loan(CustomerID customerId, String[] commands) {
+		/** 
+		 * Set up a new loan
+		 * 
+		 */
+		Double amount = Double.parseDouble(commands[1]);
+		Integer term = Integer.parseInt(commands[2]);
+		CreditAgreement agreement = new CreditAgreement(amount);
+		Loan loan = new Loan(amount, "M", agreement.GetAgreement(), term);
+
+		creditAgreements.put(customerId.getKey(), loan);
+	}
 }
