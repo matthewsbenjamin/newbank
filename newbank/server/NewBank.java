@@ -6,6 +6,7 @@ public class NewBank {
 	
 	private static final NewBank bank = new NewBank();
 	private HashMap<String,Customer> customers;
+	private HashMap<String, Loan> creditAgreements;
 	
 	private NewBank() {
 		customers = new HashMap<>();
@@ -34,7 +35,10 @@ public class NewBank {
 	public synchronized CustomerID checkLogInDetails(String userName, String password) {
 		// Need to check password!! //
 		if(customers.containsKey(userName)) {
-			return new CustomerID(userName);
+			Customer temp = customers.get(userName);
+			if (temp.checkPassword(password)) {
+				return new CustomerID(userName);
+			}
 		}
 		return null;
 	}
@@ -51,6 +55,7 @@ public class NewBank {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
 			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
 			case "MOVE" : return transfer(customer, commands);
+			case "LOAN" : loan(customer, commands);
 			default : return "FAIL";
 			}
 		}
@@ -62,11 +67,23 @@ public class NewBank {
 	}
 
 	// For the customerID add a new account....
-	private String addAccount(CustomerID customer, String account){
-		if (account == null) { return "FAIL: missing name for account"; }
-		Account tempAccount = new Account(account, 0);
-		(customers.get(customer.getKey())).addAccount(tempAccount);
-		return "SUCCESS";
+	private String addAccount(CustomerID customer, String[] account){
+		try {
+			Customer customerTemp = customers.get(customer.getKey());
+			if (account == null) {
+				return "FAIL: missing name for account";
+			}
+
+			if (customerTemp.accountNameTaken(account[1])) {
+				return "FAIL: account exists";
+			}
+			Account tempAccount = new Account(account[1], 0);
+			(customers.get(customer.getKey())).addAccount(tempAccount);
+			return "SUCCEED";
+		}
+		catch (Exception e){
+			return "FAIL (unknown)";
+		}
 	}
 
 	private String transfer(CustomerID customerId, String[] commands) {
@@ -83,4 +100,16 @@ public class NewBank {
 		return "FAIL";
 	}
 
+	private void loan(CustomerID customerId, String[] commands) {
+		/** 
+		 * Set up a new loan
+		 * 
+		 */
+		Double amount = Double.parseDouble(commands[1]);
+		Integer term = Integer.parseInt(commands[2]);
+		CreditAgreement agreement = new CreditAgreement(amount);
+		Loan loan = new Loan(amount, "M", agreement.GetAgreement(), term);
+
+		creditAgreements.put(customerId.getKey(), loan);
+	}
 }
