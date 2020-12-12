@@ -53,7 +53,7 @@ public class NewBank {
 			// 1... may be any arguments applicable to that command
 			switch(commands[0]) {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
-			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
+			case "NEWACCOUNT" : return addAccount(customer, commands);
 			case "MOVE" : transfer(customer, commands);
 			case "LOAN" : loan(customer, commands);
 			default : return "FAIL";
@@ -67,11 +67,23 @@ public class NewBank {
 	}
 
 	// For the customerID add a new account....
-	private String addAccount(CustomerID customer, String account){
-		if (account == null) { return "missing name for account"; }
-		Account tempAccount = new Account(account, 0);
-		(customers.get(customer.getKey())).addAccount(tempAccount);
-		return "DONE";
+	private String addAccount(CustomerID customer, String[] account){
+		try {
+			Customer customerTemp = customers.get(customer.getKey());
+			if (account == null) {
+				return "FAIL: missing name for account";
+			}
+
+			if (customerTemp.accountNameTaken(account[1])) {
+				return "FAIL: account exists";
+			}
+			Account tempAccount = new Account(account[1], 0);
+			(customers.get(customer.getKey())).addAccount(tempAccount);
+			return "SUCCEED";
+		}
+		catch (Exception e){
+			return "FAIL (unknown)";
+		}
 	}
 
 	private void transfer(CustomerID customerId, String[] commands) {

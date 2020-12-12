@@ -45,4 +45,13 @@ public class Customer {
 
 	}
 
+	public boolean accountNameTaken(String account){
+		for(Account a : accounts) {
+			if (a.name().equals(account)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
