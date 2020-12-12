@@ -23,8 +23,8 @@ public class NewBankClientHandler extends Thread{
 		// keep getting requests from the client and processing them
 		try {
 			CustomerID customer=null; //placeholder
-			int attempts = 0; // count attempts
-			while (attempts < 3) { //loop for 3
+			int attempts = 1; // count attempts
+			while (attempts <= 3) { //loop for 3
 				// ask for user name
 				out.println("Enter Username");
 				String userName = in.readLine();
