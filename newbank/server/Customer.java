@@ -33,16 +33,29 @@ public class Customer {
 		else {return false;}
 	}
 
-	public void transfer(Double amount, String sourceId, String destId) {
+	public boolean transfer(Double amount, String sourceId, String destId) {
+		//This structure looks dangerous if only 1 of the 2 accounts is found you could create money
+		Account acc1 = null;
+		Account acc2 = null;
+		int check = 0;
 		for (Account account : accounts) {
 			if (account.name().equals(sourceId)) {
-				account.addFunds(-amount);
+				acc1 = account;
+				//account.addFunds(-amount);
+				check++;
 			}
 			if (account.name().equals(destId)) {
-				account.addFunds(amount);
+				acc2 = account;
+				//account.addFunds(amount);
+				check++;
 			}
 		}
-
+		if (check == 2){
+			acc1.addFunds(-amount);
+			acc2.addFunds(+amount);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean accountNameTaken(String account){

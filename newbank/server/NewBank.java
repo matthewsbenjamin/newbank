@@ -53,8 +53,8 @@ public class NewBank {
 			// 1... may be any arguments applicable to that command
 			switch(commands[0]) {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
-			case "NEWACCOUNT" : return addAccount(customer, commands);
-			case "MOVE" : transfer(customer, commands);
+			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
+			case "MOVE" : return transfer(customer, commands);
 			case "LOAN" : loan(customer, commands);
 			default : return "FAIL";
 			}
@@ -86,13 +86,18 @@ public class NewBank {
 		}
 	}
 
-	private void transfer(CustomerID customerId, String[] commands) {
+	private String transfer(CustomerID customerId, String[] commands) {
+		boolean transferSuccess;
 		Double amountToMove = Double.parseDouble(commands[1]);
 		String sourceAccountName = commands[2];
 		String destinationAccountName = commands[3];
 
 		Customer customer = customers.get(customerId.getKey());
-		customer.transfer(amountToMove, sourceAccountName, destinationAccountName);
+		transferSuccess = customer.transfer(amountToMove, sourceAccountName, destinationAccountName);
+		if (transferSuccess) {
+			return "SUCCESS";
+		}
+		return "FAIL";
 	}
 
 	private void loan(CustomerID customerId, String[] commands) {
