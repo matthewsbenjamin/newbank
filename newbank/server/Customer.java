@@ -75,21 +75,15 @@ public class Customer {
 
 
 	public boolean pay(Double amount) {
-		Account acc;
+		Account acc = null;
 		for (Account account : accounts) {
 			if (account.name().equals(DEFAULT_ACCOUNT_NAME)) {
 				acc = account;
+				acc.addFunds(amount);
+				return true;
 			}
 		}
-
-		try {
-			// acc will always be initialised because the default account 
-			// is created on instantiation
-			acc.addFunds(amount);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return false;
 	}
 
 	public Account getAccount(String account){
@@ -100,6 +94,5 @@ public class Customer {
 		}
 		return null;
 	}
-
 
 }

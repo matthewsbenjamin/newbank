@@ -56,7 +56,7 @@ public class NewBank {
 			case "NEWACCOUNT" : return addAccount(customer, commands);
 			case "MOVE" : return transfer(customer, commands);
 			case "LOAN" : return loan(customer, commands);
-			case "PAY" : return pay(customer, commands);
+			case "PAY" : return pay(customer, commands); //NS: feels wrong
 			case "ADDFUNDS" : return deposit(customer, commands);
 			default : return "FAIL";
 			}
