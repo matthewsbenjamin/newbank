@@ -53,10 +53,11 @@ public class NewBank {
 			// 1... may be any arguments applicable to that command
 			switch(commands[0]) {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
-			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
+			case "NEWACCOUNT" : return addAccount(customer, commands);
 			case "MOVE" : return transfer(customer, commands);
 			case "LOAN" : return loan(customer, commands);
 			case "PAY" : return pay(customer, commands);
+			case "ADDFUNDS" : return deposit(customer, commands);
 			default : return "FAIL";
 			}
 		}
@@ -105,6 +106,32 @@ public class NewBank {
 		}
 	}
 
+	private String deposit(CustomerID customer, String[] account){
+		try {
+			Customer customerTemp = customers.get(customer.getKey());
+			if (account == null) {
+				return "FAIL: paramters";
+			}
+
+			if (!customerTemp.accountNameTaken(account[1])) {
+				return "FAIL: account does not exist";
+			}
+			Account accountTemp = customerTemp.getAccount(account[1]);
+
+			Double amount = Double.parseDouble(account[2]);
+
+			if (amount < 0 ) {
+				return "FAIL: incorrect amount";
+			}
+
+			return accountTemp.addFunds(amount);
+
+		}
+		catch (Exception e){
+			return "FAIL (unknown)";
+		}
+	}
+
 	private String transfer(CustomerID customerId, String[] commands) {
 		boolean transferSuccess;
 		Double amountToMove = Double.parseDouble(commands[1]);
@@ -124,17 +151,24 @@ public class NewBank {
 		 * Set up a new loan
 		 * 
 		 */
-		Double amount = Double.parseDouble(commands[1]);
-		Integer term = Integer.parseInt(commands[2]);
-		CreditAgreement agreement = new CreditAgreement(amount);
-		Loan loan = new Loan(amount, "M", agreement.GetAgreement(), term);
+		try {
+			Double amount = Double.parseDouble(commands[1]);
+			Integer term = Integer.parseInt(commands[2]);
+			CreditAgreement agreement = new CreditAgreement(amount);
+			Loan loan = new Loan(amount, "M", agreement.GetAgreement(), term);
 
-		
+	
 		if (loan.isValid()) {
 			creditAgreements.put(customerId.getKey(), loan);
 			customers.get(customerId.getKey()).pay(amount);
 			return "SUCCESS";
 		}
 		return "FAIL";
+			creditAgreements.put(customerId.getKey(), loan);
+		}
+		catch (Exception e){
+			return "LOAN FAIL";
+		}
+		return "SUCCESS";
 	}
 }

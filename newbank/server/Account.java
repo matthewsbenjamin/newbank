@@ -22,12 +22,9 @@ public class Account {
 		return accountName;
 	}
 
-	public void addFunds(Double amount) {
-		Double newBalance = this.balance + amount;
-		if (newBalance >= 0) {
-			this.balance = newBalance;
-		};
-		return;
+	public String addFunds(Double amount) {
+		this.balance = this.balance + amount;
+		return "SUCCESS";
 	}
 
 }
