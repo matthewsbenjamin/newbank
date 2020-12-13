@@ -2,7 +2,6 @@ package newbank.server;
 
 import java.util.ArrayList;
 
-import org.graalvm.compiler.nodes.calc.IsNullNode;
 
 import static newbank.server.MD5.getMd5;
 public class Customer {
