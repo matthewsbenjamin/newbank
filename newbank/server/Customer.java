@@ -67,4 +67,13 @@ public class Customer {
 		return false;
 	}
 
+	public Account getAccount(String account){
+		for(Account a : accounts) {
+			if (a.name().equals(account)){
+				return a;
+			}
+		}
+		return null;
+	}
+
 }
