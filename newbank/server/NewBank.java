@@ -56,6 +56,7 @@ public class NewBank {
 			case "NEWACCOUNT" : return addAccount(customer, commands);
 			case "MOVE" : return transfer(customer, commands);
 			case "LOAN" : loan(customer, commands);
+			case "ADDFUNDS" : return deposit(customer, commands);
 			default : return "FAIL";
 			}
 		}
@@ -80,6 +81,32 @@ public class NewBank {
 			Account tempAccount = new Account(account[1], 0);
 			(customers.get(customer.getKey())).addAccount(tempAccount);
 			return "SUCCEED";
+		}
+		catch (Exception e){
+			return "FAIL (unknown)";
+		}
+	}
+
+	private String deposit(CustomerID customer, String[] account){
+		try {
+			Customer customerTemp = customers.get(customer.getKey());
+			if (account == null) {
+				return "FAIL: paramters";
+			}
+
+			if (!customerTemp.accountNameTaken(account[1])) {
+				return "FAIL: account does not exist";
+			}
+			Account accountTemp = customerTemp.getAccount(account[1]);
+
+			Double amount = Double.parseDouble(account[2]);
+
+			if (amount < 0 ) {
+				return "FAIL: incorrect amount";
+			}
+
+			return accountTemp.addFunds(amount);
+
 		}
 		catch (Exception e){
 			return "FAIL (unknown)";
