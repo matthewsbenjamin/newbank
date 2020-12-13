@@ -56,10 +56,29 @@ public class NewBank {
 			case "NEWACCOUNT" : return addAccount(customer, commands);
 			case "MOVE" : return transfer(customer, commands);
 			case "LOAN" : return loan(customer, commands);
+			case "PAY" : return pay(customer, commands);
 			case "ADDFUNDS" : return deposit(customer, commands);
 			default : return "FAIL";
 			}
 		}
+		return "FAIL";
+	}
+
+	private String pay(CustomerID customer, String[] account) {
+		// PAY <Person/Company> <Ammount>
+		CustomerID payeeCustomerId = new CustomerID(account[1]);
+		Customer payeeCustomer = customers.get(payeeCustomerId.toString());
+		Customer payingCustomer = customers.get(customer.getKey());
+
+		Double amount = Double.parseDouble(account[2]);
+		// Cannot pay negative or zero amounts
+		if (amount <= 0) {
+			return "FAIL";
+		}
+
+		if (payeeCustomer != null && payingCustomer != null) {
+			return payeeCustomer.pay(amount) && payingCustomer.pay(-amount) ? "SUCCESS" : "FAIL";
+		} 
 		return "FAIL";
 	}
 	
@@ -138,6 +157,13 @@ public class NewBank {
 			CreditAgreement agreement = new CreditAgreement(amount);
 			Loan loan = new Loan(amount, "M", agreement.GetAgreement(), term);
 
+	
+		if (loan.isValid()) {
+			creditAgreements.put(customerId.getKey(), loan);
+			customers.get(customerId.getKey()).pay(amount);
+			return "SUCCESS";
+		}
+		return "FAIL";
 			creditAgreements.put(customerId.getKey(), loan);
 		}
 		catch (Exception e){

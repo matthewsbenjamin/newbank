@@ -2,15 +2,17 @@ package newbank.server;
 
 import java.util.ArrayList;
 
-import static newbank.server.MD5.getMd5;
 
+import static newbank.server.MD5.getMd5;
 public class Customer {
 	
+	private String DEFAULT_ACCOUNT_NAME = "Default";
 	private ArrayList<Account> accounts;
 	private String password; // store hashed pass
 	
 	public Customer(String password) {
 		accounts = new ArrayList<>();
+		accounts.add(new Account(DEFAULT_ACCOUNT_NAME, 0));
 		this.password = getMd5(password);
 	}
 	
@@ -31,6 +33,10 @@ public class Customer {
 		String md5Pass = getMd5(password);
 		if (this.password.equals(md5Pass)) { return true; }
 		else {return false;}
+	}
+
+	public double getBalance(Account account) {
+		return account.getBalance();
 	}
 
 	public boolean transfer(Double amount, String sourceId, String destId) {
@@ -67,6 +73,25 @@ public class Customer {
 		return false;
 	}
 
+
+	public boolean pay(Double amount) {
+		Account acc;
+		for (Account account : accounts) {
+			if (account.name().equals(DEFAULT_ACCOUNT_NAME)) {
+				acc = account;
+			}
+		}
+
+		try {
+			// acc will always be initialised because the default account 
+			// is created on instantiation
+			acc.addFunds(amount);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	public Account getAccount(String account){
 		for(Account a : accounts) {
 			if (a.name().equals(account)){
@@ -75,5 +100,6 @@ public class Customer {
 		}
 		return null;
 	}
+
 
 }

@@ -14,6 +14,10 @@ public class Account {
 		return (accountName + ": " + balance);
 	}
 
+	public double getBalance() {
+		return this.balance;
+	}
+
 	public String name() {
 		return accountName;
 	}
