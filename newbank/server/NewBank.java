@@ -53,7 +53,7 @@ public class NewBank {
 			// 1... may be any arguments applicable to that command
 			switch(commands[0]) {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
-			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
+			case "NEWACCOUNT" : return addAccount(customer, commands);
 			case "MOVE" : return transfer(customer, commands);
 			case "LOAN" : loan(customer, commands);
 			default : return "FAIL";
