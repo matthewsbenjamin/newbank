@@ -158,17 +158,15 @@ public class NewBank {
 			Loan loan = new Loan(amount, "M", agreement.GetAgreement(), term);
 
 	
-		if (loan.isValid()) {
-			creditAgreements.put(customerId.getKey(), loan);
-			customers.get(customerId.getKey()).pay(amount);
-			return "SUCCESS";
-		}
-		return "FAIL";
-			creditAgreements.put(customerId.getKey(), loan);
+			if (loan.isValid()) {
+				creditAgreements.put(customerId.getKey(), loan);
+				customers.get(customerId.getKey()).pay(amount);
+				return "SUCCESS";
+			}
+			return "FAIL";
 		}
 		catch (Exception e){
 			return "LOAN FAIL";
 		}
-		return "SUCCESS";
 	}
 }
