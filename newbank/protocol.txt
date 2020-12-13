@@ -14,8 +14,8 @@ MOVE <Amount> <From> <To>
 e.g. MOVE 100 Main Savings 
 Returns SUCCESS or FAIL
 
-ADDFUNDS <Amount> <AccountName>
-e.g. ADDFUNDS 100 Checking
+ADDFUNDS <AccountName> <Amount>
+e.g. ADDFUNDS Checking 100
 Returns SUCCESS or FAIL
 
 PAY <Person/Company> <Ammount> // some issues remaining
