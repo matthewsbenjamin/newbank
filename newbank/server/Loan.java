@@ -51,4 +51,9 @@ public class Loan {
     this.principal -= amount;
     return;
   }
+
+  public boolean isValid() {
+    // TODO - returns whether the agreement is valid
+    return true;
+  }
 }

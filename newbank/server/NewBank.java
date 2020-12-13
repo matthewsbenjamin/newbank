@@ -55,7 +55,7 @@ public class NewBank {
 			case "SHOWMYACCOUNTS" : return showMyAccounts(customer);
 			case "NEWACCOUNT" : return addAccount(customer, commands[1]);
 			case "MOVE" : return transfer(customer, commands);
-			case "LOAN" : loan(customer, commands);
+			case "LOAN" : return loan(customer, commands);
 			case "PAY" : return pay(customer, commands);
 			default : return "FAIL";
 			}
@@ -119,7 +119,7 @@ public class NewBank {
 		return "FAIL";
 	}
 
-	private void loan(CustomerID customerId, String[] commands) {
+	private String loan(CustomerID customerId, String[] commands) {
 		/** 
 		 * Set up a new loan
 		 * 
@@ -129,6 +129,12 @@ public class NewBank {
 		CreditAgreement agreement = new CreditAgreement(amount);
 		Loan loan = new Loan(amount, "M", agreement.GetAgreement(), term);
 
-		creditAgreements.put(customerId.getKey(), loan);
+		
+		if (loan.isValid()) {
+			creditAgreements.put(customerId.getKey(), loan);
+			customers.get(customerId.getKey()).pay(amount);
+			return "SUCCESS";
+		}
+		return "FAIL";
 	}
 }
